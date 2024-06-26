@@ -28,15 +28,7 @@ export default function RootLayout({
           <AppProvider>
             <SidebarProvider>
               <TitleHeaderProvider>
-                <body className={inter.className}>
-                  <div className="page-wrapper">
-                    <Sidebar />
-                    <div className="content-wrapper">
-                      <AppBar />
-                      <div className="content-wrapper_bot">{children}</div>
-                    </div>
-                  </div>
-                </body>
+                <body className={inter.className}>{children}</body>
               </TitleHeaderProvider>
             </SidebarProvider>
           </AppProvider>

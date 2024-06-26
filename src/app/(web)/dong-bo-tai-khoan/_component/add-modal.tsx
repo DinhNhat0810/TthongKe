@@ -1,7 +1,9 @@
+"use client";
+
 import { Button, ConfigProvider, Form, Modal } from "antd";
 import React, { useState } from "react";
-import CustomInput from "../../../components/CustomInput";
-import { taomoitaikhoanfields } from "../config";
+import { taomoitaikhoanfields } from "./config";
+import CustomInput from "@/components/CustomInput";
 
 export default function AddModal({
   isModalOpen,
