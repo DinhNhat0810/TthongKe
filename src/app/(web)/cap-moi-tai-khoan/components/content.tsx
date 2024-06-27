@@ -9,6 +9,7 @@ import CustomLoading from "@/components/CustomLoading";
 import CustomInput from "@/components/CustomInput";
 import AddModal from "./add-modal";
 import { userApiRequests } from "@/apiRequests/user";
+import { themDonVi, themtaikhoan } from "@/app/action";
 
 export default function CapMoiTaiKhoan() {
   const [form1] = Form.useForm();
@@ -44,11 +45,16 @@ export default function CapMoiTaiKhoan() {
 
     setLoading(true);
     try {
-      const res: any = await userApiRequests.themttdonvi({
+      const res: any = await themDonVi({
         ...values,
       });
 
-      if (res.status === 401 || res.status === 400) {
+      if (
+        res.status_code === 401 ||
+        res.status_code === 400 ||
+        res.status === 400 ||
+        res.status === 500
+      ) {
         setLoading(false);
         handleOpenNotification({
           type: "error",
@@ -58,7 +64,7 @@ export default function CapMoiTaiKhoan() {
         return;
       }
 
-      if (res?.status === 200) {
+      if (res?.status_code === 200) {
         form1.resetFields();
         handleOpenNotification({
           type: "success",
@@ -83,22 +89,28 @@ export default function CapMoiTaiKhoan() {
     setLoading(true);
 
     try {
-      const res: any = await userApiRequests.themuser({
+      const res: any = await themtaikhoan({
         ...values,
         role_ids: [values.role_ids],
       });
 
-      if (res.status === 401 || res.status === 400) {
+      if (
+        res.status_code === 401 ||
+        res.status_code === 400 ||
+        res.status === 400 ||
+        res.status === 500
+      ) {
         setLoading(false);
         handleOpenNotification({
           type: "error",
           message: "Thêm mới người dùng thất bại",
+
           description: res?.payload?.message,
         });
         return;
       }
 
-      if (res?.status === 200) {
+      if (res?.status_code === 200) {
         form1.resetFields();
         handleOpenNotification({
           type: "success",

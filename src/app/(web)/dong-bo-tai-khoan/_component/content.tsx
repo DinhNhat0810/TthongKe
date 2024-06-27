@@ -11,6 +11,7 @@ import CustomInput from "@/components/CustomInput";
 import AddModal from "./add-modal";
 import PushInfoModal from "./push-infor-modal";
 import dayjs from "dayjs";
+import { themDonVi, themtaikhoan } from "@/app/action";
 
 const checkhoadon = [
   {
@@ -86,11 +87,16 @@ export default function DongBoTaiKhoan() {
 
     setLoading(true);
     try {
-      const res: any = await userApiRequests.themttdonvi({
+      const res: any = await themDonVi({
         ...values,
       });
 
-      if (res.status === 401 || res.status === 400) {
+      if (
+        res.status_code === 401 ||
+        res.status_code === 400 ||
+        res.status === 400 ||
+        res.status === 500
+      ) {
         setLoading(false);
         handleOpenNotification({
           type: "error",
@@ -100,7 +106,7 @@ export default function DongBoTaiKhoan() {
         return;
       }
 
-      if (res?.status === 200) {
+      if (res?.status_code === 200) {
         form1.resetFields();
         handleOpenNotification({
           type: "success",
@@ -125,24 +131,28 @@ export default function DongBoTaiKhoan() {
     setLoading(true);
 
     try {
-      const res: any = await userApiRequests.themuser({
+      const res: any = await themtaikhoan({
         ...values,
         role_ids: [values.role_ids],
-        ngay_lap: dayjs(values.ngay_lap).format("YYYY-MM-DD"),
-        ngay_co_hieu_luc: dayjs(values.ngay_co_hieu_luc).format("YYYY-MM-DD"),
       });
 
-      if (res.status === 401 || res.status === 400) {
+      if (
+        res.status_code === 401 ||
+        res.status_code === 400 ||
+        res.status === 400 ||
+        res.status === 500
+      ) {
         setLoading(false);
         handleOpenNotification({
           type: "error",
           message: "Thêm mới người dùng thất bại",
+
           description: res?.payload?.message,
         });
         return;
       }
 
-      if (res?.status === 200) {
+      if (res?.status_code === 200) {
         form1.resetFields();
         handleOpenNotification({
           type: "success",
@@ -151,6 +161,7 @@ export default function DongBoTaiKhoan() {
         });
         handleCancel();
       }
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -161,7 +172,6 @@ export default function DongBoTaiKhoan() {
       });
     }
   };
-
   const handlePushInfo = async (values: any) => {
     try {
       console.log(values);
