@@ -5,6 +5,7 @@ import { TitleHeaderContext } from "@/contexts/title-header.context";
 import { useContext, useEffect, useRef, useState } from "react";
 import { MdOutlineMenu } from "react-icons/md";
 import { AppBarWrap } from "./AppBar.styles";
+import AppBarProfile from "./AppBarProfile";
 
 const AppBar = () => {
   const [showInputControl, setShowInputControl] = useState(false);
@@ -45,7 +46,9 @@ const AppBar = () => {
           </button>
           <h3 className="appbar-title">{title}</h3>
         </div>
-        <div className="appbar-right">{/* <AppBarProfile /> */}</div>
+        <div className="appbar-right">
+          <AppBarProfile />
+        </div>
       </div>
     </AppBarWrap>
   );

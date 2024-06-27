@@ -30,7 +30,7 @@ export default function PushInfoModal({
         onFinish={handlePushInfo}
         form={form}
         initialValues={{
-          role_ids: 10,
+          loai_to_khai_id: 1,
         }}
       >
         <div
@@ -64,6 +64,7 @@ export default function PushInfoModal({
                     options={field?.options}
                     defaultValue={field?.defaultValue}
                     gutter={field?.gutter}
+                    labelCheckbox={field?.labelCheckbox}
                   />
                 </div>
               </div>

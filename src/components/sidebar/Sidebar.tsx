@@ -12,13 +12,15 @@ import { Icons } from "@/assets/icons";
 import { Images } from "@/assets/images";
 import { SidebarWrap } from "./Sidebar.styles";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { authApiRequests } from "@/apiRequests/auth";
 
 const Sidebar = () => {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   const [active, setActive] = useState(ROUTE.HOME);
   const { setTitle } = useContext(TitleHeaderContext);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const curr = ROUTES.find((item) => item.path === pathname);
@@ -51,6 +53,13 @@ const Sidebar = () => {
       label: "Đăng xuất",
     },
   ];
+
+  const handleLogout = async () => {
+    await authApiRequests.logoutFromNextClientToNextServer().then((res) => {
+      localStorage.removeItem("user");
+      router.push(`/login`);
+    });
+  };
 
   return (
     <SidebarWrap className={`${isOpen ? "sidebar-open" : ""}`}>
@@ -85,6 +94,12 @@ const Sidebar = () => {
                       active === item?.path ? "active" : ""
                     }`}
                     scroll={false}
+                    onClick={(e) => {
+                      if (item.path === ROUTE.LOGOUT) {
+                        e.preventDefault();
+                        handleLogout();
+                      }
+                    }}
                   >
                     <span className="menu-link-icon">
                       <Image

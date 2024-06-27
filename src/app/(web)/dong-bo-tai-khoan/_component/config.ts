@@ -462,7 +462,7 @@ export const daytokhaiFields = [
     name: "checkHoadon",
     label: "Loại hóa đơn sử dụng",
     placeholder: "Chọn loại hóa đơn sử dụng",
-    type: "checkbox",
+    type: "checkboxGroup",
     width: "100%",
     rules: [
       {
@@ -507,26 +507,22 @@ export const daytokhaiFields = [
     ],
   },
   {
-    key: "camket",
-    name: "camket",
+    key: "is_camket",
+    name: "is_camket",
     label: "Cam kết",
     placeholder: "Chọn cam kết",
     type: "checkbox",
     width: "100%",
     rules: [
       {
-        required: true,
-        message: "Vui lòng chọn cam kết",
+        validator: (_: any, value: any) =>
+          value
+            ? Promise.resolve()
+            : Promise.reject(new Error("Vui lòng chọn cam kết")),
       },
     ],
     gutter: [12, 8],
-    options: [
-      {
-        label:
-          "Chúng tôi cam kết hoàn toàn chịu trách nhiệm trước pháp luật về tính chính xác, trung thực của nội dung nêu trên và thực hiện theo đúng quy định của pháp luật.",
-        value: "is_camket",
-        span: 24,
-      },
-    ],
+    labelCheckbox:
+      "Chúng tôi cam kết hoàn toàn chịu trách nhiệm trước pháp luật về tính chính xác, trung thực của nội dung nêu trên và thực hiện theo đúng quy định của pháp luật.",
   },
 ];

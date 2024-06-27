@@ -1,4 +1,0 @@
-> Ready on http://localhost:\\.\pipe\f33523ee-b1e1-4840-a126-4d5f95d71ab0
- ○ Compiling /favicon.ico ...
- ✓ Compiled /favicon.ico in 539ms (53 modules)
- GET /favicon.ico 200 in 659ms

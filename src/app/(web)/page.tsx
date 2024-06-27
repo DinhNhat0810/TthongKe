@@ -1,3 +1,5 @@
+import DashBoard from "@/components/DashBoard";
+
 export default function ThongKe() {
-  return <div>Thong ke</div>;
+  return <DashBoard />;
 }

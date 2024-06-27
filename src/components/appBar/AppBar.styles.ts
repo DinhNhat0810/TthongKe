@@ -290,7 +290,6 @@ export const AppBarWrap = styled.div`
       flex-direction: column;
       min-width: 80px;
       line-height: 1.4;
-      width: 80px;
 
       ${media.md`
         min-width: auto;

@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 export async function POST(request: Request) {
   const body = await request.json();
 
@@ -22,6 +24,7 @@ export async function POST(request: Request) {
     "Set-Cookie",
     `refresh_token=${refresh_token}; Path=/; HttpOnly; SameSite=Lax; Secure`
   );
+
   return Response.json(body, {
     status: 200,
     headers: headers,

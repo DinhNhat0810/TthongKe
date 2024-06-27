@@ -12,6 +12,7 @@ import { NotificationContext } from "@/contexts/notification.context";
 import { authApiRequests } from "@/apiRequests/auth";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "@/app/app-provider";
+import { login } from "@/app/action";
 
 type Props = {};
 
@@ -24,58 +25,44 @@ const FormLogin = (props: Props) => {
   const handleLogin = async (values: any) => {
     setLoading(true);
     try {
-      const callback = (error: any) => {
-        setLoading(false);
-        handleOpenNotification({
-          type: "error",
-          message: "Đăng nhập thất bại",
-          description:
-            error.response?.data?.message || error.response?.data?.title,
-        });
-        console.log("error", error);
-      };
-
-      const res: any = await authApiRequests.login({
+      const res: any = await login({
         ...values,
-        donvi_ma_dv: "0103930279-999",
-        password: "ncm@123",
-        username: "admin",
         reCaptchaToken: "6LfRAYApAAAAAO6tYfzdtFmuRNOtCOH3BxTy9pCM",
       });
 
-      if (res.status === 400) {
+      // const res = {
+      //   status_code: resd.status,
+      //   data: resd.payload.data,
+      // };
+
+      console.log(res);
+
+      if (res.status_code === 200 && res?.data?.token_info?.access_token) {
+        const aloha = await authApiRequests.auth({
+          access_token: res?.data?.token_info.access_token,
+          refresh_token: res?.data?.token_info.refresh_token,
+        });
+
+        setUser({
+          donvi_ma_dv: res?.data?.profile?.donvi_ma_dv,
+          username: res?.data?.profile?.username,
+          token_info: res?.data?.token_info,
+        });
+
+        setLoading(false);
+
+        // window.location.href = "/";
+        router.push("/", { scroll: false });
+      } else {
         setLoading(false);
         handleOpenNotification({
           type: "error",
           message: "Đăng nhập thất bại",
-          description: res?.payload?.message,
+          description: res?.message || res?.title,
         });
         return;
       }
 
-      if (res.payload?.data?.token_info.access_token) {
-        await authApiRequests.auth({
-          access_token: res.payload?.data?.token_info.access_token,
-          refresh_token: res.payload?.data?.token_info.refresh_token,
-        });
-
-        console.log(res.payload?.data);
-
-        setUser({
-          donvi_ma_dv: res.payload?.data?.profile?.donvi_ma_dv,
-          username: res.payload?.data?.profile?.username,
-          token_info: res.payload?.data?.token_info,
-        });
-
-        // localStorage.setItem(
-        //   "token",
-        //   JSON.stringify({
-        //     access_token: res.payload?.data?.token_info.access_token,
-        //     refresh_token: res.payload?.data?.token_info.refresh_token,
-        //   })
-        // );
-        router.push("/", { scroll: false });
-      }
       setLoading(false);
     } catch (error) {
       setLoading(false);

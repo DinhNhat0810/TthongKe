@@ -1,14 +1,13 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const privatePaths = ["/", "/cap-moi-tai-khoan", "/dong-bo-tai-khoan"];
 const authPaths = ["/login"];
 
-// This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  // const accessToken = request.cookies.get("access_token")?.value;
-  const accessToken = true;
+  const accessToken = request.cookies.get("access_token")?.value;
 
   // Chưa đăng nhập thì không cho vào private paths
   if (

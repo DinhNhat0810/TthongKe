@@ -10,6 +10,7 @@ import {
   Row,
   Select,
 } from "antd";
+import { memo } from "react";
 
 const CustomInput = ({
   value,
@@ -30,12 +31,15 @@ const CustomInput = ({
   stylelabel,
   onChangeRadio,
   onChangeCheckbox,
+  onChangeCheckboxGroup,
+  labelCheckbox,
   gutter,
   ...inputProps
 }: {
   value?: string;
   onChangeRadio?: (e: RadioChangeEvent) => void;
   onChangeCheckbox?: (checkedValues: any) => void;
+  onChangeCheckboxGroup?: (checkedValues: any) => void;
   [key: string]: any;
 }) => {
   return (
@@ -67,6 +71,7 @@ const CustomInput = ({
         rules={rules}
         name={name}
         label={labelHorizontal}
+        valuePropName={type === "checkbox" ? "checked" : "value"}
       >
         {type === "text" && (
           <Input placeholder={placeholder} size={size} {...inputProps} />
@@ -102,8 +107,8 @@ const CustomInput = ({
           ></Radio.Group>
         )}
 
-        {type === "checkbox" && (
-          <Checkbox.Group onChange={onChangeCheckbox} {...inputProps}>
+        {type === "checkboxGroup" && (
+          <Checkbox.Group onChange={onChangeCheckboxGroup} {...inputProps}>
             <Row gutter={gutter}>
               {options?.map((option: any, index: number) => {
                 return (
@@ -115,9 +120,15 @@ const CustomInput = ({
             </Row>
           </Checkbox.Group>
         )}
+
+        {type === "checkbox" && (
+          <Checkbox onChange={onChangeCheckbox} {...inputProps}>
+            {labelCheckbox}
+          </Checkbox>
+        )}
       </Form.Item>
     </ConfigProvider>
   );
 };
 
-export default CustomInput;
+export default memo(CustomInput);

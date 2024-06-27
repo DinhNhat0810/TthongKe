@@ -11,12 +11,12 @@ import CustomInput from "@/components/CustomInput";
 import AddModal from "./add-modal";
 import PushInfoModal from "./push-infor-modal";
 import dayjs from "dayjs";
-import { themDonVi, themtaikhoan } from "@/app/action";
+import { daytokhai, themDonVi, themtaikhoan } from "@/app/action";
 
 const checkhoadon = [
   {
     field: "is_hoadon_co_ma_cqt",
-    value: true,
+    value: false,
   },
 
   {
@@ -101,7 +101,7 @@ export default function DongBoTaiKhoan() {
         handleOpenNotification({
           type: "error",
           message: "Thêm mới thông tin đơn vị thất bại",
-          description: res?.payload?.message,
+          description: res?.message,
         });
         return;
       }
@@ -146,8 +146,7 @@ export default function DongBoTaiKhoan() {
         handleOpenNotification({
           type: "error",
           message: "Thêm mới người dùng thất bại",
-
-          description: res?.payload?.message,
+          description: res?.message,
         });
         return;
       }
@@ -172,9 +171,72 @@ export default function DongBoTaiKhoan() {
       });
     }
   };
+
   const handlePushInfo = async (values: any) => {
+    setLoading(true);
     try {
-      console.log(values);
+      const arr = checkhoadon.map((item) => {
+        if (values.checkHoadon.includes(item.field)) {
+          return {
+            ...item,
+            value: true,
+          };
+        }
+
+        return {
+          ...item,
+          value: false,
+        };
+      });
+
+      const convertedObject = arr.reduce((acc: any, { field, value }) => {
+        acc[field] = value;
+        return acc;
+      }, {});
+
+      delete values.checkHoadon;
+
+      const res: any = await daytokhai({
+        ...values,
+        ...convertedObject,
+        ngay_lap: values.ngay_lap
+          ? dayjs(values.ngay_lap).format("YYYY-MM-DD")
+          : "",
+        ngay_co_hieu_luc: values.ngay_co_hieu_luc
+          ? dayjs(values.ngay_co_hieu_luc).format("YYYY-MM-DD")
+          : "",
+        nguoi_tao: "",
+        cks_serial_no: "",
+        cks_user_full_name: "",
+        phat_hanh_uuid: "",
+        ma_to_khai: "1",
+      });
+
+      if (
+        res.status_code === 401 ||
+        res.status_code === 400 ||
+        res.status === 400 ||
+        res.status === 500
+      ) {
+        setLoading(false);
+        handleOpenNotification({
+          type: "error",
+          message: "Đẩy thông tin tờ khai thất bại",
+          description: res?.message || res?.title,
+        });
+        return;
+      }
+
+      if (res?.status_code === 200) {
+        form1.resetFields();
+        handleOpenNotification({
+          type: "success",
+          message: "Đẩy thông tin tờ khai thành công",
+          description: "",
+        });
+      }
+
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       handleOpenNotification({

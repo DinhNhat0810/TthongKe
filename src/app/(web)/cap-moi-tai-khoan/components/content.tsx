@@ -50,7 +50,7 @@ export default function CapMoiTaiKhoan() {
       });
 
       if (
-        res.status_code === 401 ||
+        res.status === 401 ||
         res.status_code === 400 ||
         res.status === 400 ||
         res.status === 500
@@ -59,7 +59,7 @@ export default function CapMoiTaiKhoan() {
         handleOpenNotification({
           type: "error",
           message: "Thêm mới thông tin đơn vị thất bại",
-          description: res?.payload?.message,
+          description: res?.message || res?.title,
         });
         return;
       }
@@ -96,6 +96,7 @@ export default function CapMoiTaiKhoan() {
 
       if (
         res.status_code === 401 ||
+        res.status === 401 ||
         res.status_code === 400 ||
         res.status === 400 ||
         res.status === 500
@@ -105,7 +106,7 @@ export default function CapMoiTaiKhoan() {
           type: "error",
           message: "Thêm mới người dùng thất bại",
 
-          description: res?.payload?.message,
+          description: res?.message || res?.title,
         });
         return;
       }
