@@ -212,12 +212,14 @@ export default function DongBoTaiKhoan() {
         ma_to_khai: "1",
       });
 
-      if (
-        res.status_code === 401 ||
-        res.status_code === 400 ||
-        res.status === 400 ||
-        res.status === 500
-      ) {
+      if (res?.status_code === 200 || res?.status === 200) {
+        form1.resetFields();
+        handleOpenNotification({
+          type: "success",
+          message: "Đẩy thông tin tờ khai thành công",
+          description: "",
+        });
+      } else {
         setLoading(false);
         handleOpenNotification({
           type: "error",
@@ -225,15 +227,6 @@ export default function DongBoTaiKhoan() {
           description: res?.message || res?.title,
         });
         return;
-      }
-
-      if (res?.status_code === 200) {
-        form1.resetFields();
-        handleOpenNotification({
-          type: "success",
-          message: "Đẩy thông tin tờ khai thành công",
-          description: "",
-        });
       }
 
       setLoading(false);
@@ -255,9 +248,13 @@ export default function DongBoTaiKhoan() {
           <h3>Thêm mới thông tin đơn vị</h3>
 
           <div>
+            <Button onClick={showModal} type="primary">
+              Cập nhật SL HĐ còn lại
+            </Button>
             <Button
               style={{
                 marginRight: 8,
+                marginLeft: 8,
               }}
               onClick={showPushInfoModal}
               type="primary"

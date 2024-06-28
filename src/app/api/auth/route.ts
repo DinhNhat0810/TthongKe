@@ -18,11 +18,11 @@ export async function POST(request: Request) {
   const headers = new Headers();
   headers.append(
     "Set-Cookie",
-    `access_token=${access_token}; Path=/; HttpOnly; SameSite=Lax; Secure`
+    `access_token=${access_token}; Path=/; HttpOnly; SameSite=Lax;`
   );
   headers.append(
     "Set-Cookie",
-    `refresh_token=${refresh_token}; Path=/; HttpOnly; SameSite=Lax; Secure`
+    `refresh_token=${refresh_token}; Path=/; HttpOnly; SameSite=Lax;`
   );
 
   return Response.json(body, {

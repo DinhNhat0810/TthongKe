@@ -55,10 +55,9 @@ const Sidebar = () => {
   ];
 
   const handleLogout = async () => {
-    await authApiRequests.logoutFromNextClientToNextServer().then((res) => {
-      localStorage.removeItem("user");
-      router.push(`/login`);
-    });
+    await authApiRequests.logoutFromNextClientToNextServer();
+    localStorage.removeItem("user");
+    router.push(`/login`);
   };
 
   return (
